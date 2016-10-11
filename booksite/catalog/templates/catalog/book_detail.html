@@ -1,0 +1,49 @@
+{% extends "catalog/base.html" %}
+{% block content %}
+<div id='product-detail'>
+	<div class='product-top-block-image cf'>
+		<div class='product-image'>
+			<img alt='Book Image' src='{{ book.img_url }}'>		
+		</div>
+	</div>
+	<div class='product-top-block-info'>
+		<div class='product-title float-left cf'>
+			<h1 itemprop='title'>{{ book.title }}</h1>
+		</div>
+		<div class='author cf'>{{ book.author }}</div>
+		<div class='created cf'>{{ book.created }}</div>
+		<div class='isbn cf'>ISBN: {{ book.isbn }}</div>
+		<div class='price cf' >${{ book.price }}</div>		
+		<form action='' method = 'post'>
+			<div class='quantity cf'>
+				{{ form.as_p }}
+				{% csrf_token %}
+			</div>
+			<div class='cart-button'>
+			<button class='add-to-cart-button cf' type='submit'>
+				Add to Cart
+			</button>
+			</div>
+			</span>
+		</form>
+	</div>
+	<div class='description cf'>
+		{{ book.description }}
+	</div>
+</div>
+<div id='related-books'>
+	<h3>Recommended for You</h3>
+	{% for book in related_books %}
+	<div class='product-block-outer'>
+		<div class='product-block'>
+			<a class='product-block-img' href='{{ book.get_absolute_url }}'>
+				<img alt='Book Image' src='{{ book.img_url }}'>
+			</a>
+			<div class='product-block-title'>{{ book.title }}</div>
+			<div class='product-block-price'>${{ book.price }}</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>	
+	
+{% endblock %}

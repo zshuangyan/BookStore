@@ -1,0 +1,58 @@
+{% extends "accounts/base.html" %}
+{% block content %}
+<div class="account-content">
+	<div class='page-header'>
+		<h2>Address List</h2>
+	</div>
+	<div class='content-inner'>
+	    <table class='pure-table pure-table-bordered profile-address'>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Phone</th>
+					<th>Country</th>
+					<th>City</th>
+					<th>Street</th>
+					<th>PostCode</th>
+					<th>Operate</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for address in addresses %}
+				<tr>
+					<td>{{ address.name }}</td>
+					<td>{{ address.phone }}</td>
+					<td>{{ address.country }}</td>
+					<td>{{ address.city }}</td>
+					<td>{{ address.street }}</td>
+					<td>{{ address.postcode }}</td>
+					<td>
+						<a href="{% url 'accounts:address_edit' pk=address.pk %}"><i class="fa fa-pencil-square-o" title="edit" aria-hidden="true"></i></a>
+						<a href="{% url 'accounts:address_delete' pk=address.pk %}"><i class="fa fa-trash-o" title="delete" aria-hidden="true"></i></a>
+						{% if address.default %}
+						<i class="fa fa-check-square-o" aria-hidden="true" title='default address'></i>
+						{% endif %}
+					</td>
+				</tr>
+				{% endfor %}  
+			</tbody>
+	    </table>
+	    <div class='address-new'><a href="{% url 'accounts:address_new' %}">New</a></div>
+	    <div class='pagination cf'>
+		{% if page_obj.has_previous %}
+		<span class='previous'>		
+			<a href='?page={{ page_obj.previous_page_number }}'>previous</a>
+		</span>
+		{% endif %}
+		<span class="current">
+			Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+		</span>
+		{% if page_obj.has_next %}
+		<span class='next'>
+			<a href='?page={{ page_obj.next_page_number }}'>next</a>
+		</span>
+		{% endif %}
+	</div> 
+	</div>
+</div>
+{% endblock %}

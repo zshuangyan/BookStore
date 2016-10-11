@@ -1,0 +1,22 @@
+{% extends "accounts/base.html" %}
+{% block content %}
+<div class="account-content">
+	<div class='page-header'>
+		<h2>Profile</h2>
+	</div>
+	<div class='content-inner'>
+		<img src='{{ profile.image.url }}' width='300' height='310'/>
+		<table class='table table-striped'>
+			{% for field in profile.get_all_fields %}
+			<tr>
+				<th>{{ field.name | title }}</th>
+				<td>{{ field.value }}</td>
+			</tr>
+			{% endfor %}
+		</table>
+		<a href="{% url 'accounts:profile_edit' %}">
+			<div class='edit-profile'>edit</div>
+		</a>
+	</div>
+</div>
+{% endblock %}

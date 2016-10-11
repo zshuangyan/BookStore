@@ -1,0 +1,63 @@
+$ py -3 -m pdb manage.py runserver
+> c:\booksite\booksite\manage.py(2)<module>()
+-> import os
+(Pdb) c
+[31/Aug/2016 17:10:32] "GET /books/ HTTP/1.1" 200 10615
+[31/Aug/2016 17:10:33] "GET /static/css/base.css HTTP/1.1" 304 0
+[31/Aug/2016 17:10:33] "GET /static/debug_toolbar/css/print.css HTTP/1.1" 304 0
+[31/Aug/2016 17:10:33] "GET /static/debug_toolbar/js/jquery_pre.js HTTP/1.1" 304 0
+[31/Aug/2016 17:10:33] "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 304 0
+[31/Aug/2016 17:10:33] "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 304 0
+[31/Aug/2016 17:10:33] "GET /static/debug_toolbar/js/jquery_post.js HTTP/1.1" 304 0
+[31/Aug/2016 17:10:33] "GET /static/debug_toolbar/img/ajax-loader.gif HTTP/1.1" 304 0
+Performing system checks...
+
+System check identified no issues (0 silenced).
+August 31, 2016 - 17:10:31
+Django version 1.8.6, using settings 'booksite.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+> c:\booksite\booksite\catalog\views.py(44)book_detail()
+-> if request.method == 'POST':
+(Pdb)
+(Pdb) > c:\booksite\booksite\catalog\views.py(44)book_detail()
+-> if request.method == 'POST':
+(Pdb) list
+ 39     def book_detail(request,slug):
+ 40         book = get_object_or_404(Book, slug= slug)
+ 41         categories = Category.objects.filter(is_active=True)
+ 42         form = CartAddProductForm()
+ 43         import pdb; pdb.set_trace()
+ 44  ->     if request.method == 'POST':
+ 45             if form.is_valid():
+ 46                 cd = form.cleaned_data
+ 47                 cart = Cart(request)
+ 48                 cart.add( book= book ,quantity = cd['quantity'])
+ 49                 return HttpResponseRedirect(reverse('cart:show_cart'))
+(Pdb) n
+> c:\booksite\booksite\catalog\views.py(51)book_detail()
+-> return render(request,'catalog/book_detail.html',{'book':book, 'categories':categories,'form':form})
+(Pdb) > c:\booksite\booksite\catalog\views.py(44)book_detail()
+-> if request.method == 'POST':
+(Pdb) list
+ 50         else:
+ 51             return render(request,'catalog/book_detail.html',{'book':book, 'categories':categories,'form':form})
+ 52
+ 53
+ 54
+ 55
+[EOF]
+(Pdb) > c:\booksite\booksite\catalog\views.py(44)book_detail()
+-> if request.method == 'POST':
+(Pdb) list
+ 46                 cd = form.cleaned_data
+ 47                 cart = Cart(request)
+ 48                 cart.add( book= book ,quantity = cd['quantity'])
+ 49                 return HttpResponseRedirect(reverse('cart:show_cart'))
+ 50         else:
+ 51  ->         return render(request,'catalog/book_detail.html',{'book':book, 'categories':categories,'form':form})
+ 52
+ 53
+ 54
+ 55
+[EOF]

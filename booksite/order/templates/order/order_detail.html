@@ -1,0 +1,52 @@
+{% extends "cart/base.html" %}
+{% block content %}
+<div id='your-order' class='cf'>
+	<div class='inner'>
+		<div class='page-header'>
+			<h2>Your Order {{ order.order_id }}</h2>
+		</div>
+		<table class='pure-table pure-table-bordered'>
+		    <thead>
+		        <tr>
+		           <th>Product</th>
+		           <th>Quantity</th>
+		           <th>Unit price</th>
+		           <th>Price</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        {% for item in items %}
+		            {% with book=item.book %}
+		            <tr>
+		                <td>
+		                    <a href='{{ book.get_absolute_url }}'>{{ book.title }}</a>
+		                </td>
+		                <td>{{ item.quantity }}</td>
+		                <td>${{ item.unit_price }}</td>
+		                <td>${{ item.total_price }}</td>
+		            </tr>
+		            {% endwith %}
+		        {% endfor %}
+		    </tbody>
+		</table>
+        <div class='total'>
+        	<span>Total: </span>
+        	<span>${{ order.total_price }}</span>
+        </div>	
+		<div id='related-books'>
+		<h3>Recommended for You</h3>
+		{% for book in related_books %}
+		<div class='product-block-outer'>
+			<div class='product-block'>
+				<a class='product-block-img' href='{{ book.get_absolute_url }}'>
+					<img alt='Book Image' src='{{ book.img_url }}'>
+				</a>
+				<div class='product-block-title'>{{ book.title }}</div>
+				<div class='product-block-price'>${{ book.price }}</div>
+			</div>
+		</div>
+		{% endfor %}
+</div>	
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "accounts/base.html" %}
+{% block content %}
+<h2>Delete Address</h2>
+<form action="" method="post">
+    {% csrf_token %}
+    {% for a in address.get_all_fields %}
+	    {{ a.value }}</br>
+	{% endfor %}
+    <p>Are you sure you want to delete "{{ object }}"?</p>
+    <input type='submit' value='Confirm'/>
+    <a href="{% url 'accounts:address_list' %}">Cancel</a>
+</form>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% load staticfiles %}
+<html>
+<head>
+<title>{% block title%}Online Bookstore{% endblock %}</title>
+<meta charset='UTF-8'>
+<link rel="stylesheet" href="{% static 'css/base.css' %}?{% now " U" %}"/>
+<link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}?{% now " U" %}"/>
+<link rel="stylesheet" href="{% static 'css/font-awesome.css' %}?{% now " U" %}"/>
+<script src="http://libs.baidu.com/jquery/1.9.0/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/jqueryui/1.11.4/jquery-ui.js"></script>
+{% block javascript %}{% endblock %}
+</head>
+<body>
+	<div id='page'>
+		<div id='header'>
+			<div id='account-bar' class='cf'>
+				<div class='container'>
+					<div id='account-bar-status'>
+						{% if request.user.is_authenticated %}
+						<div class='account-bar-hello-user'>
+							<div class='account-bar-hello'>Hello {{ request.user.username }},</div>
+							<a class='logout' href="{% url 'accounts:logout' %}">Logout</a>
+						</div>
+						{% else %}
+						<div class='account-bar-login-register'>
+							<a class='login' href="{% url 'accounts:login' %}">Login</a>
+							<div class='account-bar-divider'>|</div>
+							<a class='Register' href="{% url 'accounts:register' %}">Register</a>
+						</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			<div id='menu-bar' class='cf'>
+				<div class='container'>
+					<div id='menu-links'>
+						<div class='menu-item-tab'>
+							<a href="/"> <span class='menu-logo'>Bookstore</span>
+							</a>
+						</div>
+						<div class='menu-item-tab'>
+							<a href="{% url 'catalog:book_list' %}"> <span
+								class='menu-text'>Books</span>
+							</a>
+						</div>
+						<div class='menu-item-tab'>
+							<a href="{% url 'cart:show_cart' %}"> <span class='menu-text'>Cart</span>
+							</a>
+						</div>
+						<div class='menu-item-tab'>
+							<a href="{% url 'accounts:profile' %}"> <span
+								class='menu-text'>Account</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id='content' class='cf'>
+			<div class='container'>
+				<div id='account-left-sidebar'>
+					<div id='category' class='cf'>
+						<div class='heading'>Account Management</div>
+						<div class='category-content'>
+							<div class='cat-item'>
+								<a href="{% url 'accounts:profile' %}">Personal Information</a>
+							</div>
+							<div class='cat-item'>
+								<a href="{% url 'accounts:order_list' %}">Order History</a>
+							</div>
+							<div class='cat-item'>
+								<a href="{% url 'accounts:address_list' %}">Address Book</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id='account-right-content'>{% block content %} {% endblock %}</div>
+			</div>
+		</div>
+		<div id='footer'>
+			<div class='container'>
+				<div class='footer-main-block'>
+					<h2>Contact Us</h2>
+					<p>Get in touch here if you have any queries or issues.</p>
+				</div>
+				<div class='footer-main-block'>
+					<h2>Help & Support</h2>
+					<p>Click here for FAQs, order information, T&Cs, errata and
+						code downloads</p>
+				</div>
+				<div class='footer-main-block'>
+					<h2>Alerts & Offers</h2>
+					<p>Sign up to our emails for regular updates, bespoke offers,
+						exclusive discounts and great free content.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

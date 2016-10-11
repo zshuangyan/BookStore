@@ -1,0 +1,91 @@
+{% extends "cart/base.html" %}
+{% block javascript %}
+<script type='text/javascript'>
+	$('.deleteForm').submit(function(event){
+		//stop form from submitting normally
+		event.preventDefault();
+		var item_id = $(this).children(':first').val();
+		$.ajax({
+			type:'POST',
+			data:{'item_id':item_id},
+		});
+	});
+	
+	$('.updateForm').submit(function(event){
+		//stop form from submitting normally
+		event.preventDefault();
+		var quantity = $(this).find("input[name='quantity']").val();
+		var item_id = $(this).find("input[name='item_id']").val();
+		$.ajax({
+			type:'POST',
+			data:{'item_id':item_id,
+			'quantity':quantity}
+		});
+	});
+	
+</script>
+{% endblock %}
+{% block content %}
+<div id='your-cart' class='cf'>
+	<div class='left-pane'>
+		<div class='inner'>
+			<h1>Your shopping cart</h1>
+			{% for item in cart %}
+				{% with book=item.book %}
+				<div id='item-{{ item.id }}' class='cart-product-line cf'>
+					<div class='product-image float-left'>
+						<a href='{{ book.get_absolute_url }}'>
+							<img alt='Book Image' src='{{ book.img_url }}'>
+						</a>
+					</div>
+					<div class='product-description float-left'>
+						<div class='product-title'>
+							<a href='{{ book.get_absolute_url }}'>
+								<h2>{{ book.title }}</h2>
+							</a>
+						</div>
+						<div class='author'>{{ book.author }}</div>
+						<div class='price'>${{ book.price }}</div>
+						<form class='updateForm float-left' action='' method='post'>
+						{% csrf_token %}
+						Quantity:
+						<input class='quantity' type='number' name='quantity' pattern="[0-9]*" value='{{ item.quantity }}'/>
+						<input type='hidden' name='item_id' value='{{ item.id}}'/>
+						<input class='update' type='submit' name='submit' value='Update'/>
+						</form>
+						<form class='deleteForm' action="" method="post">
+						{% csrf_token %}
+						<input type='hidden' name='item_id' value='{{ item.id}}'/>
+						<div class='float-right remove'>
+							<button class='remove' type='submit' name='submit' value='Remove'>
+								<span class="remove-icon"></span>
+								Remove
+							</button>
+						</div>
+						</form>																		
+					</div>
+				</div>
+				{% endwith %}
+			{% endfor %}
+		</div>
+	</div>
+	<div class='right-pane'>
+		<div id='cart-summary' class='checkout-pane cf'>
+			<div class='summary-header cf'>
+				<h2>Summary</h2>
+			</div>
+			<div id='cart-summary-body'>
+				<div class='inner'>
+					<div class='sub-total'>
+						Total ({{ cart.sub_amount }} product{{ cart.sub_amount|pluralize }}): 
+						<span class='price'>${{ cart.sub_price }}</span>
+					</div>					
+					<a href="{% url 'order:create' %}">
+						<div class='checkout button'>CheckOut</div>
+					</a>									
+				</div>					
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
