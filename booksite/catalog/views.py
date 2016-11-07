@@ -31,24 +31,16 @@ def book_list(request):
 class CategoryBookList(ListView):
     template_name = 'catalog/book_list.html'
     paginate_by = 12
-
+    context_object_name='books'
+    
     def get_queryset(self):
         self.category = get_object_or_404(Category, slug=self.kwargs['slug'])
-        return Book.objects.filter(category=self.category)
-    
+        return Book.objects.filter(is_active=True, category= self.category)
+
     def get_context_data(self,**kwargs):
         context= super().get_context_data(**kwargs)
         context['categories'] = Category.objects.filter(is_active=True)
-        book_list = Book.objects.filter(is_active= True)
-        paginator = Paginator(book_list, self.paginate_by)
-        page = self.request.GET.get('page')
-        try:
-            context['books'] = paginator.page(page)
-        except PageNotAnInteger:
-            context['books'] = paginator.page(1)
-        except EmptyPage:
-            context['books'] = paginator.page(paginator.num_pages)
-        return context    
+        return context   
 '''        
 class BookDetailView(DetailView):
     model = Book
